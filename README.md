@@ -28,6 +28,54 @@ Del anterior diagrama de componentes (de alto nivel), se desprendió el siguient
 
 1. Integre al proyecto base suministrado los Beans desarrollados en el ejercicio anterior. Sólo copie las clases, NO los archivos de configuración. Rectifique que se tenga correctamente configurado el esquema de inyección de dependencias con las anotaciones @Service y @Autowired.
 
+**Para el proyecto base, implementamos los métodos ya implementados en el ejercicio anterior, que son ```BlueprintServices```, ```BlueprintsFilter```, ```RedundancyFilter```, ```SubsamplingFilter```, entre otras. Para esto, primero implementamos la clase ```BlueprintServices```, con su respectivo esquema de inyección de dependencias con las anotaciones @Service y @Autowired, quedando de la siguiente forma.**
+
+```java
+@Service("BlueprintsServices")
+public class BlueprintsServices {
+    @Autowired
+    @Qualifier("InMemoryBlueprintPersistence")
+    BlueprintsPersistence bpp;
+    @Autowired
+    @Qualifier("RedundancyFilter")
+    BlueprintsFilter bpf;
+    public Blueprint filter(Blueprint bp){
+        return bpf.filter(bp);
+    }
+    public void addNewBlueprint(Blueprint bp) throws BlueprintPersistenceException {
+        bpp.saveBlueprint(bp);
+    } 
+    public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException {
+        return bpp.getAllBlueprints();
+    }  
+    /**
+     * 
+     * @param author blueprint's author
+     * @param name blueprint's name
+     * @return the blueprint of the given name created by the given author
+     * @throws BlueprintNotFoundException if there is no such blueprint
+     */
+    public Blueprint getBlueprint(String author,String name) throws BlueprintNotFoundException{
+        return bpp.getBlueprint(author,name);
+    }   
+    /**
+     * 
+     * @param author blueprint's author
+     * @return all the blueprints of the given author
+     * @throws BlueprintNotFoundException if the given author doesn't exist
+     */
+    public Set<Blueprint> getBlueprintsByAuthor(String author) throws BlueprintNotFoundException{
+        return bpp.getBlueprintsByAuthor(author);
+    }
+
+    public void updateBlueprint(Blueprint bp,String author,String name) throws BlueprintNotFoundException {
+        bpp.updateBlueprint(bp,author,name);
+    }
+}
+```
+
+****
+
 2. Modifique el bean de persistecia 'InMemoryBlueprintPersistence' para que por defecto se inicialice con al menos otros tres planos, y con dos asociados a un mismo autor.
 
 3. Configure su aplicación para que ofrezca el recurso "/blueprints", de manera que cuando se le haga una petición GET, retorne -en formato jSON- el conjunto de todos los planos. Para esto:
