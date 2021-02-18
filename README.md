@@ -28,7 +28,7 @@ Del anterior diagrama de componentes (de alto nivel), se desprendió el siguient
 
 1. Integre al proyecto base suministrado los Beans desarrollados en el ejercicio anterior. Sólo copie las clases, NO los archivos de configuración. Rectifique que se tenga correctamente configurado el esquema de inyección de dependencias con las anotaciones @Service y @Autowired.
 
-**Para el proyecto base, implementamos los métodos ya implementados en el ejercicio anterior, que son ```BlueprintServices```, ```BlueprintsFilter```, ```RedundancyFilter```, ```SubsamplingFilter```, entre otras. Para esto, primero implementamos la clase ```BlueprintServices```, con su respectivo esquema de inyección de dependencias con las anotaciones @Service y @Autowired, quedando de la siguiente forma.**
+**Para el proyecto base, implementamos los métodos ya implementados en el ejercicio anterior, que son ```BlueprintServices```, ```BlueprintsFilter```, ```RedundancyFilter```, ```SubsamplingFilter```, entre otras. Para esto, primero implementamos la clase ```BlueprintServices```, con su respectivo esquema de inyección de dependencias con las anotaciones ```@Service``` y ```@Autowired```, quedando de la siguiente forma.**
 
 ```java
 @Service("BlueprintsServices")
@@ -74,9 +74,60 @@ public class BlueprintsServices {
 }
 ```
 
-****
-
 2. Modifique el bean de persistecia 'InMemoryBlueprintPersistence' para que por defecto se inicialice con al menos otros tres planos, y con dos asociados a un mismo autor.
+
+**A continuación se realiza la siguiente modificación al bean de persistecia 'InMemoryBlueprintPersistence', en el cual se crean tres planos, dos asociados a un mismo autor (David) y otro plano asociado a un autor (Alejandro), quedando la clase de la siguiente forma.**
+
+```java
+@Service("InMemoryBlueprintPersistence")
+public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
+    private final ConcurrentHashMap<Tuple<String,String>,Blueprint> blueprints=new ConcurrentHashMap<>();
+    public InMemoryBlueprintPersistence() {
+        Point[] pts=new Point[]{new Point(140, 140),new Point(115, 115)};
+        Point[] points= new Point[] {new Point(1,2),new Point(3,4),new Point(1,2)};
+        Point[] pts2=new Point[]{new Point(14, 14),new Point(11, 15)};
+        Blueprint bp=new Blueprint("Alejandro", "bp1",pts);
+        Blueprint bp2=new Blueprint("David","bp2",points);
+        Blueprint bp3=new Blueprint("David","bp3",pts2);
+        blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+        blueprints.put(new Tuple<>(bp2.getAuthor(),bp2.getName()), bp2);
+        blueprints.put(new Tuple<>(bp3.getAuthor(),bp3.getName()), bp3);
+    }     
+    @Override
+    public void saveBlueprint(Blueprint bp) throws BlueprintPersistenceException {
+        Blueprint blueprint= blueprints.putIfAbsent(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+        if (blueprint!=null){
+            throw new BlueprintPersistenceException("The given blueprint already exists: "+bp);
+        }
+    }
+    @Override
+    public  HashSet<Blueprint> getAllBlueprints(){
+        return new HashSet<Blueprint>(blueprints.values());
+    }
+    @Override
+    public void updateBlueprint(Blueprint bp,String author,String name) throws BlueprintNotFoundException {
+        Blueprint oldbp=getBlueprint(author,name);
+        oldbp.setPoints(bp.getPoints());
+    }
+    @Override
+    public Blueprint getBlueprint(String author, String bprintname) throws BlueprintNotFoundException {
+        Blueprint bp=blueprints.get(new Tuple<>(author, bprintname));
+        if(bp==null)throw new BlueprintNotFoundException("El plano con estas caracteristicas no existe");
+        return bp;
+    }
+    @Override
+    public Set<Blueprint> getBlueprintsByAuthor(String author) throws BlueprintNotFoundException{
+        Set<Blueprint> ans = new HashSet<>();
+        for(Map.Entry<Tuple<String, String>, Blueprint> i :blueprints.entrySet()){
+            if(i.getKey().o1.equals(author)){
+                ans.add(i.getValue());
+            }
+        }
+        if(ans.size()==0) throw new BlueprintNotFoundException("Este usuario no tiene planos");
+        return ans;
+    }
+}
+```
 
 3. Configure su aplicación para que ofrezca el recurso "/blueprints", de manera que cuando se le haga una petición GET, retorne -en formato jSON- el conjunto de todos los planos. Para esto:
 
