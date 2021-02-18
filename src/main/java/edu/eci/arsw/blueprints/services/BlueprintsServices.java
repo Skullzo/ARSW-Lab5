@@ -33,7 +33,6 @@ public class BlueprintsServices {
 
     @Autowired
     @Qualifier("RedundancyFilter")
-    //@Qualifier("SubsamplingFilter")
     BlueprintsFilter bpf;
 
     public Blueprint filter(Blueprint bp){
