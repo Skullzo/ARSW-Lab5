@@ -194,6 +194,8 @@ public class BlueprintAPIController {
 
 
 
+-----------------------------------------------------------------------------------
+
 ### Parte II
 
 1.  Agregue el manejo de peticiones POST (creación de nuevos planos), de manera que un cliente http pueda registrar una nueva orden haciendo una petición POST al recurso ‘planos’, y enviando como contenido de la petición todo el detalle de dicho recurso a través de un documento jSON. Para esto, tenga en cuenta el siguiente ejemplo, que considera -por consistencia con el protocolo HTTP- el manejo de códigos de estados HTTP (en caso de éxito o error):
@@ -235,6 +237,9 @@ public class BlueprintAPIController {
 4. Agregue soporte al verbo PUT para los recursos de la forma '/blueprints/{author}/{bpname}', de manera que sea posible actualizar un plano determinado.
 
 
+
+-----------------------------------------------------------------------------------
+
 ### Parte III
 
 El componente BlueprintsRESTAPI funcionará en un entorno concurrente. Es decir, atederá múltiples peticiones simultáneamente (con el stack de aplicaciones usado, dichas peticiones se atenderán por defecto a través múltiples de hilos). Dado lo anterior, debe hacer una revisión de su API (una vez funcione), e identificar:
@@ -247,3 +252,11 @@ Ajuste el código para suprimir las condiciones de carrera. Tengan en cuenta que
 Escriba su análisis y la solución aplicada en el archivo ANALISIS_CONCURRENCIA.txt
 
 
+## Autores
+[Alejandro Toro Daza](https://github.com/Skullzo)
+
+[David Fernando Rivera Vargas](https://github.com/DavidRiveraRvD)
+## Licencia & Derechos de Autor
+**©** Alejandro Toro Daza, David Fernando Rivera Vargas. Estudiantes de Ingeniería de Sistemas de la [Escuela Colombiana de Ingeniería Julio Garavito](https://www.escuelaing.edu.co/es/).
+
+Licencia bajo la [GNU General Public License](https://github.com/Skullzo/ARSW-Lab5/blob/main/LICENSE).
