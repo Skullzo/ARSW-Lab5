@@ -153,6 +153,31 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
 	```
 	* Haga que en esta misma clase se inyecte el bean de tipo BlueprintServices (al cual, a su vez, se le inyectarán sus dependencias de persisntecia y de filtrado de puntos).
 
+**A continuación, se agrega a la clase las anotaciones ```@RestController``` y ```@RequestMapping```, en el cual se agrega el recurso ```/blueprints``` como se pide en el enunciado del problema. Asimismo, se agrega la respectiva inyección del bean de tipo ```BlueprintServices```, al cual se le realizan las respectivas inyecciones de sus dependencias de persisntecia y de filtrado de puntos, mediante anotaciones como ```@Autowired``` y ```@Qualifier```. También se completa la implementación de la excepción agregando un error si no se encuentra la página, y retornando la página si se encuentran los planos.**
+
+```java
+@RestController
+@RequestMapping(value = "/blueprints")
+public class BlueprintAPIController {
+
+    @Autowired
+    @Qualifier("BlueprintsServices")
+    BlueprintsServices services;
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> manejadorBlueprints(){
+
+        try {
+            //obtener datos que se enviarán a través del API
+            return new ResponseEntity<>(services.getAllBlueprints(), HttpStatus.ACCEPTED);
+        } catch (Exception ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Error bla bla bla",HttpStatus.NOT_FOUND);
+        }
+    }
+}
+```
+
 4. Verifique el funcionamiento de a aplicación lanzando la aplicación con maven:
 
 	```bash
