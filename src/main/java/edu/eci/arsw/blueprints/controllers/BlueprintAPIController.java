@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.services.BlueprintsServices;
 /**
@@ -28,14 +27,11 @@ import edu.eci.arsw.blueprints.services.BlueprintsServices;
 @RestController
 @RequestMapping(value = "/blueprints")
 public class BlueprintAPIController {
-
     @Autowired
     @Qualifier("BlueprintsServices")
     BlueprintsServices services;
-
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> manejadorBlueprints(){
-
         try {
             //obtener datos que se enviarán a través del API
             return new ResponseEntity<>(services.getAllBlueprints(), HttpStatus.ACCEPTED);
