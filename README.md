@@ -340,13 +340,17 @@ public ResponseEntity<?> manejadorPutBlueprint(@PathVariable("author") String au
 
 El componente BlueprintsRESTAPI funcionará en un entorno concurrente. Es decir, atederá múltiples peticiones simultáneamente (con el stack de aplicaciones usado, dichas peticiones se atenderán por defecto a través múltiples de hilos). Dado lo anterior, debe hacer una revisión de su API (una vez funcione), e identificar:
 
-* Qué condiciones de carrera se podrían presentar?
-* Cuales son las respectivas regiones críticas?
+* ¿Qué condiciones de carrera se podrían presentar?
+
+**Al hacer una respectiva consulta sobre la lista de planos o blueprints, se podría presentar una condición de carrera, debido a que al momento de acceder al recurso compartido que es la lista de planos o blueprints, puede suceder. Por otro lado, otra condición de carrera que se podría presentar es cuando se desea actualizar un plano y dos o más usuarios quieren también actualizar este plano al mismo tiempo.**
+
+* ¿Cuales son las respectivas regiones críticas?
+
+**Luego de realizar las respectivas solicitudes concurrentemente, se presenta una región crítica en el momento de actualizar los planos, ya que pueden estar varios clientes cambiando el mismo blueprint simultáneamente. Por otra parte, las partes en las que se hacen cambios sobre el MAP que contienen los planos, también serían las regiones críticas y se presentan en mayor parte cuando se realiza la petición de PUT sobre ellas.**
 
 Ajuste el código para suprimir las condiciones de carrera. Tengan en cuenta que simplemente sincronizar el acceso a las operaciones de persistencia/consulta DEGRADARÁ SIGNIFICATIVAMENTE el desempeño de API, por lo cual se deben buscar estrategias alternativas.
 
 Escriba su análisis y la solución aplicada en el archivo ANALISIS_CONCURRENCIA.txt
-
 
 ## Autores
 [Alejandro Toro Daza](https://github.com/Skullzo)
