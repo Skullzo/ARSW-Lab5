@@ -1,0 +1,7 @@
+1. ¿Qué condiciones de carrera se podrían presentar?
+
+Al hacer una respectiva consulta sobre la lista de planos o blueprints, se podría presentar una condición de carrera, debido a que al momento de acceder al recurso compartido que es la lista de planos o blueprints, puede suceder. Por otro lado, otra condición de carrera que se podría presentar es cuando se desea actualizar un plano y dos o más usuarios quieren también actualizar este plano al mismo tiempo.
+
+2. ¿Cuales son las respectivas regiones críticas?
+
+Luego de realizar las respectivas solicitudes concurrentemente, se presenta una región crítica en el momento de actualizar los planos, ya que pueden estar varios clientes cambiando el mismo blueprint simultáneamente. Por otra parte, las partes en las que se hacen cambios sobre el MAP que contienen los planos, también serían las regiones críticas y se presentan en mayor parte cuando se realiza la petición de PUT sobre ellas.
