@@ -20,15 +20,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
     private final ConcurrentHashMap<Tuple<String,String>,Blueprint> blueprints=new ConcurrentHashMap<>();
     public InMemoryBlueprintPersistence() {
-        Point[] pts=new Point[]{new Point(140, 140),new Point(115, 115)};
-        Point[] points= new Point[] {new Point(1,2),new Point(3,4),new Point(1,2)};
-        Point[] pts2=new Point[]{new Point(14, 14),new Point(11, 15)};
-        Blueprint bp=new Blueprint("Alejandro", "bp1",pts);
-        Blueprint bp2=new Blueprint("David","bp2",points);
-        Blueprint bp3=new Blueprint("David","bp3",pts2);
-        blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+    	Point[] pts=new Point[]{new Point(140, 140),new Point(115, 115)};
+        Blueprint bp1=new Blueprint("carlos", "prueba",pts);
+        Blueprint bp2=new Blueprint("negro", "obra2",pts);
+        Blueprint bp3=new Blueprint("juan", "iliada",pts);
+        Blueprint bp4=new Blueprint("juan", "SDFSDF",pts);
+        Blueprint bp5=new Blueprint("negro", "aasda",pts);
+        blueprints.put(new Tuple<>(bp1.getAuthor(),bp1.getName()), bp1);
         blueprints.put(new Tuple<>(bp2.getAuthor(),bp2.getName()), bp2);
         blueprints.put(new Tuple<>(bp3.getAuthor(),bp3.getName()), bp3);
+        blueprints.put(new Tuple<>(bp4.getAuthor(),bp4.getName()), bp4);
+        blueprints.put(new Tuple<>(bp5.getAuthor(),bp5.getName()), bp5);
     }     
     @Override
     public void saveBlueprint(Blueprint bp) throws BlueprintPersistenceException {
