@@ -211,6 +211,26 @@ public InMemoryBlueprintPersistence() {
 
 5. Modifique el controlador para que ahora, acepte peticiones GET al recurso /blueprints/{author}, el cual retorne usando una representación jSON todos los planos realizados por el autor cuyo nombre sea {author}. Si no existe dicho autor, se debe responder con el código de error HTTP 404. Para esto, revise en [la documentación de Spring](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html), sección 22.3.2, el uso de @PathVariable. De nuevo, verifique que al hacer una petición GET -por ejemplo- a recurso http://localhost:8080/blueprints/juan, se obtenga en formato jSON el conjunto de planos asociados al autor 'juan' (ajuste esto a los nombres de autor usados en el punto 2).
 
+**A contnuación, se modifica el controlador en la clase correspondiente, que es ```BlueprintAPIController```, en la cual ahora se encarga de aceptar peticiones GET al recurso /blueprints/{author}, y al realizarle la petición GET, este retorna usando una representación jSON todos los planos realizados por el autor cuyo nombre es {author}. Para esto se tomó el mismo ejemplo descrito en el enunciado, que es ```http://localhost:8080/blueprints/juan```.**
+
+```java
+@RequestMapping(value="/{author}", method = RequestMethod.GET)
+public ResponseEntity<?>  manejadorBlueprintsByAuthor(@PathVariable("author") String author){
+
+        try {
+            //obtener datos que se enviarán a través del API
+            return new ResponseEntity<>(services.getBlueprintsByAuthor(author), HttpStatus.ACCEPTED);
+        } catch (Exception ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+}
+```
+
+**En la siguiente imgen se encuentra en formato JSON el conjunto de planos asociados al autor 'juan', luego de escribir en el navegador ```http://localhost:8080/blueprints/juan```.**
+
+![img](https://github.com/Skullzo/ARSW-Lab5/blob/main/img/Parte1.5.png)
+
 6. Modifique el controlador para que ahora, acepte peticiones GET al recurso /blueprints/{author}/{bpname}, el cual retorne usando una representación jSON sólo UN plano, en este caso el realizado por {author} y cuyo nombre sea {bpname}. De nuevo, si no existe dicho autor, se debe responder con el código de error HTTP 404. 
 
 
