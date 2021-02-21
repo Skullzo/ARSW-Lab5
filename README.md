@@ -233,7 +233,24 @@ public ResponseEntity<?>  manejadorBlueprintsByAuthor(@PathVariable("author") St
 
 6. Modifique el controlador para que ahora, acepte peticiones GET al recurso /blueprints/{author}/{bpname}, el cual retorne usando una representación jSON sólo UN plano, en este caso el realizado por {author} y cuyo nombre sea {bpname}. De nuevo, si no existe dicho autor, se debe responder con el código de error HTTP 404. 
 
+**Ahora, nuevamente modificamos el controlador en la clase correspondiente, que es ```BlueprintAPIController```, el cual ahora acepta peticiones GET al recurso /blueprints/{author}/{bpname}, el cual retorna una representación jSON sólo UN plano, en este caso el realizado por {author} y cuyo nombre sea {bpname}. Las modificaciones realizadas se ven en el siguiente código.**
 
+```java
+@RequestMapping(value="/{author}/{name}", method = RequestMethod.GET)
+public ResponseEntity<?>  manejadorBlueprint(@PathVariable("author") String author,@PathVariable("name") String name ){
+        try {
+            //obtener datos que se enviarán a través del API
+            return new ResponseEntity<>(services.getBlueprint(author,name), HttpStatus.ACCEPTED);
+        } catch (Exception ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+}
+```
+
+**Al ingresar el URL correspondiente en el navegador, que es ```http://localhost:8080/blueprints/juan/iliada```, en el cual se encuentra el autor (juan) y el nombre (iliada). El resultado obtenido se puede observar a continuación.**
+
+![img](https://github.com/Skullzo/ARSW-Lab5/blob/main/img/Parte1.6.png)
 
 -----------------------------------------------------------------------------------
 
