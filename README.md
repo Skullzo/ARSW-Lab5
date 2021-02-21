@@ -207,7 +207,7 @@ public InMemoryBlueprintPersistence() {
 
 **Luego de realizar una petición GET a http://localhost:8080/blueprints, luego de haber ejecutado los comandos ```mvn compile``` y ```mvn spring-boot:run``` respectivamente, se obtiene un objeto JSON con la lista que contiene el detalle de los planos suministados por defecto, con sus respectivos filtros. Al escribir en el navegador ```localhost:8080/blueprints```, se obtiene el siguiente resultado.**
 
-![img](https://github.com/Skullzo/ARSW-Lab3/blob/main/img/Parte1.4.PNG)
+![img](https://github.com/Skullzo/ARSW-Lab5/blob/main/img/Parte1.4.png)
 
 5. Modifique el controlador para que ahora, acepte peticiones GET al recurso /blueprints/{author}, el cual retorne usando una representación jSON todos los planos realizados por el autor cuyo nombre sea {author}. Si no existe dicho autor, se debe responder con el código de error HTTP 404. Para esto, revise en [la documentación de Spring](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html), sección 22.3.2, el uso de @PathVariable. De nuevo, verifique que al hacer una petición GET -por ejemplo- a recurso http://localhost:8080/blueprints/juan, se obtenga en formato jSON el conjunto de planos asociados al autor 'juan' (ajuste esto a los nombres de autor usados en el punto 2).
 
