@@ -62,4 +62,15 @@ public class BlueprintAPIController {
             return new ResponseEntity<>("Error bla bla bla",HttpStatus.FORBIDDEN);
         }
     }
+    @RequestMapping(value="/{author}/{name}",method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<?> manejadorPutBlueprint(@PathVariable("author") String author,@PathVariable("name") String name,@RequestBody Blueprint bp ) {
+        try {
+            services.updateBlueprint(bp,author,name);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (Exception ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+    }
 }
