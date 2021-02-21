@@ -40,4 +40,26 @@ public class BlueprintAPIController {
             return new ResponseEntity<>("Error bla bla bla",HttpStatus.NOT_FOUND);
         }
     }
+    @RequestMapping(value="/{author}", method = RequestMethod.GET)
+    public ResponseEntity<?>  manejadorBlueprintsByAuthor(@PathVariable("author") String author){
+
+        try {
+            //obtener datos que se enviarán a través del API
+            return new ResponseEntity<>(services.getBlueprintsByAuthor(author), HttpStatus.ACCEPTED);
+        } catch (Exception ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @RequestMapping(value="/crear-blueprint",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> manejadorPostBlueprint(@RequestBody Blueprint bp){
+        try {
+            services.addNewBlueprint(bp);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Error bla bla bla",HttpStatus.FORBIDDEN);
+        }
+    }
 }
