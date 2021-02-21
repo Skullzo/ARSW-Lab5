@@ -186,7 +186,28 @@ public class BlueprintAPIController {
 	
 	```
 	Y luego enviando una petición GET a: http://localhost:8080/blueprints. Rectifique que, como respuesta, se obtenga un objeto jSON con una lista que contenga el detalle de los planos suministados por defecto, y que se haya aplicado el filtrado de puntos correspondiente.
+	
+**Primero, para comprobar que mas planos sirvieran antes de realizar el experimento, se realizó la siguiente modificación a la clase o persistence bean ```InMemoryBlueprintPersistence```, quedando de la siguiente forma.**
 
+```java
+public InMemoryBlueprintPersistence() {
+    	Point[] pts=new Point[]{new Point(140, 140),new Point(115, 115)};
+        Blueprint bp1=new Blueprint("carlos", "prueba",pts);
+        Blueprint bp2=new Blueprint("negro", "obra2",pts);
+        Blueprint bp3=new Blueprint("juan", "iliada",pts);
+        Blueprint bp4=new Blueprint("juan", "SDFSDF",pts);
+        Blueprint bp5=new Blueprint("negro", "aasda",pts);
+        blueprints.put(new Tuple<>(bp1.getAuthor(),bp1.getName()), bp1);
+        blueprints.put(new Tuple<>(bp2.getAuthor(),bp2.getName()), bp2);
+        blueprints.put(new Tuple<>(bp3.getAuthor(),bp3.getName()), bp3);
+        blueprints.put(new Tuple<>(bp4.getAuthor(),bp4.getName()), bp4);
+        blueprints.put(new Tuple<>(bp5.getAuthor(),bp5.getName()), bp5);
+    }   
+```
+
+**Luego de realizar una petición GET a http://localhost:8080/blueprints, luego de haber ejecutado los comandos ```mvn compile``` y ```mvn spring-boot:run``` respectivamente, se obtiene un objeto JSON con la lista que contiene el detalle de los planos suministados por defecto, con sus respectivos filtros. Al escribir en el navegador ```localhost:8080/blueprints```, se obtiene el siguiente resultado.**
+
+![img](https://github.com/Skullzo/ARSW-Lab3/blob/main/img/Parte1.4.PNG)
 
 5. Modifique el controlador para que ahora, acepte peticiones GET al recurso /blueprints/{author}, el cual retorne usando una representación jSON todos los planos realizados por el autor cuyo nombre sea {author}. Si no existe dicho autor, se debe responder con el código de error HTTP 404. Para esto, revise en [la documentación de Spring](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html), sección 22.3.2, el uso de @PathVariable. De nuevo, verifique que al hacer una petición GET -por ejemplo- a recurso http://localhost:8080/blueprints/juan, se obtenga en formato jSON el conjunto de planos asociados al autor 'juan' (ajuste esto a los nombres de autor usados en el punto 2).
 
