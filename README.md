@@ -288,9 +288,18 @@ public ResponseEntity<?>  manejadorBlueprint(@PathVariable("author") String auth
 	
 
 	Nota: puede basarse en el formato jSON mostrado en el navegador al consultar una orden con el método GET.
+	
+**Ahora, se realiza la respectiva prueba del recurso ‘planos’, el cual acepta e interpreta correctamente las peticiones POST. Para esto se utiliza el comando curl de Unix que se encuentra en el enunciado, pero en este se realizan las siguientes modificaciones a continuación.**
 
+```
+curl -i -X POST -HContent-Type:application/json -HAccept:application/json http://localhost:8080/blueprints -d "{"""author""":"""checho""","""points""":[{"""x""":10,"""y""":10},{"""x""":15,"""y""":0}],"""name""":"""obra"""}"
+```
 
 3. Teniendo en cuenta el autor y numbre del plano registrado, verifique que el mismo se pueda obtener mediante una petición GET al recurso '/blueprints/{author}/{bpname}' correspondiente.
+
+**Teniendo en cuenta el autor establecido en el punto 2, que es ```checho```, y el nombre, que es ```obra```, los cuales fueron ingresados en el comando curl de Unix, se procede a realizar la verificación en el que el mismo se pueda obtener mediante una petición GET al recurso '/blueprints/{author}/{bpname}' correspondiente. Para esto, se ingresa en el navegador la URL que es ```http://localhost:8080/blueprints/checho/obra```, y el resultado obtenido es el siguiente.**
+
+![img](https://github.com/Skullzo/ARSW-Lab5/blob/main/img/Parte2.3.png)
 
 4. Agregue soporte al verbo PUT para los recursos de la forma '/blueprints/{author}/{bpname}', de manera que sea posible actualizar un plano determinado.
 
