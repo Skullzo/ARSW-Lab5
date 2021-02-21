@@ -272,6 +272,21 @@ public ResponseEntity<?>  manejadorBlueprint(@PathVariable("author") String auth
 	}
 	```	
 
+**A continuación, se agrega en la clase ```BlueprintAPIController``` el mandejo de peticiones POST, la cual se encarga de crear nuevos planos, en la cual un cliente HTTP pueda registrar una nueva orden haciendo una petición POST al recurso ‘planos’, en el cual se envia como contenido de la petición todo el detalle de dicho recurso a través de un documento jSON. Las modificaciones del código se observan a continuación.**
+
+```java
+@RequestMapping(value="/crear-blueprint",method = RequestMethod.POST)
+@ResponseBody
+public ResponseEntity<?> manejadorPostBlueprint(@RequestBody Blueprint bp){
+        try {
+            services.addNewBlueprint(bp);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Error bla bla bla",HttpStatus.FORBIDDEN);
+        }
+}
+```
 
 2.  Para probar que el recurso ‘planos’ acepta e interpreta
     correctamente las peticiones POST, use el comando curl de Unix. Este
@@ -303,7 +318,21 @@ curl -i -X POST -HContent-Type:application/json -HAccept:application/json http:/
 
 4. Agregue soporte al verbo PUT para los recursos de la forma '/blueprints/{author}/{bpname}', de manera que sea posible actualizar un plano determinado.
 
+**A continuación, se agrega el respectivo soporte al verbo PUT para los recursos de la forma '/blueprints/{author}/{bpname}', en la cual es posible actualizar un plano determinado. Para esto, se realizan las respectivas modificaciones a la clase ```BlueprintAPIController```, quedando de la siguiente forma.**
 
+```java
+@RequestMapping(value="/{author}/{name}",method = RequestMethod.PUT)
+@ResponseBody
+public ResponseEntity<?> manejadorPutBlueprint(@PathVariable("author") String author,@PathVariable("name") String name,@RequestBody Blueprint bp ) {
+        try {
+            services.updateBlueprint(bp,author,name);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (Exception ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+}
+```
 
 -----------------------------------------------------------------------------------
 
